@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stackly home</title>
+  
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+  <style>
+    /* ---------- Global custom styles ---------- */
+    :root {
+      --accent: #06b6d4; /* cyan-400 */
+      --muted: #9ca3af;
+      --card: #0f1724; /* dark card */
+    }
+
+    /* Smooth entrance animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) both; }
+
+    @keyframes fadeScale {
+      from { opacity: 0; transform: translateY(24px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .fade-scale { animation: fadeScale 1s ease both; }
+
+    /* Subtle float on cards */
+    .card-hover { transition: transform .35s ease, box-shadow .35s ease; }
+    .card-hover:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 40px rgba(2,6,23,.6); }
+
+    /* Desktop dropdown style */
+    .dropdown-panel { min-width: 11rem; }
+
+    /* Hero overlay & text shadow */
+    .hero-overlay { background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.75)); }
+    .glow { text-shadow: 0 6px 30px rgba(6,182,212,0.08); }
+
+    /* Responsive tweaks */
+    @media (min-width:768px) {
+      .nav-center { left: 50%; transform: translateX(-50%); }
+    }
+
+    /* Accessibility focus */
+    a:focus, button:focus { outline: 3px solid rgba(6,182,212,0.18); outline-offset: 2px; }
+
+    /* small utils */
+    .muted { color: var(--muted); }
+
+    .what-we-do {
+    padding: 60px 20px;
+    text-align: center;
+    background: #050505; /* or remove if you want full black page */
+}
+
+.what-we-do h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #d8d8e1;
+    margin-bottom: 15px;
+}
+
+.what-we-do p {
+    color: #9eb5c7;
+    font-size: 18px;
+}
+/* Custom breakpoint: show desktop menu only at ≥1117px */
+@media (min-width: 1117px) {
+  .xl2\:flex {
+    display: flex !important;
+  }
+  .xl2\:hidden {
+    display: none !important;
+  }
+}
+.nav-active {
+  color: cyan !important;
+}
+
+
+
+  </style>
+</head>
+<body class="font-inter antialiased bg-black text-white">
+
+ 
+<!-- HEADER -->
+<header class="header fixed top-0 left-0 w-full z-50 bg-black shadow h-20 flex items-center">
+  <div class="max-w-7xl w-full mx-auto px-6 flex items-center justify-between h-full">
+
+    <!-- LOGO -->
+    <a href="index.html" class="flex items-center gap-3">
+  <img src="stackly.webp" class="w-40 h-40 object-contain" alt="Stackly logo">
+</a>
+
+    
+     <!-- DESKTOP MENU -->
+    <nav class="hidden xl2:flex gap-8 font-semibold items-center text-white">
+
+      <div class="relative group">
+        <a href="index.html" class="hover:text-cyan-400 flex items-center gap-1 nav-link">
+          Home
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </a>
+
+        <div class="absolute bg-black shadow-lg rounded-lg hidden group-hover:block 
+             w-36 top-full pt-3 z-50">
+          <a href="home2.html" class="block px-4 py-2 hover:bg-gray-800 nav-link">Home 2</a>
+        </div>
+      </div>
+
+      <a href="about1.html" class="nav-link hover:text-cyan-400">Menu🍔</a>
+      <a href="services1.html" class="nav-link hover:text-cyan-400">Specials🥘🍰</a>
+      <a href="Dashboard.html"  class="nav-link"style="color: #22d3ee !important; font-weight: 700 !important;">dashboard📊</a>
+      <a href="contact.html" class="nav-link hover:text-cyan-400">Contact📞</a>
+
+      <a href="login.html" class="px-5 py-2 bg-cyan-500 text-black rounded-lg hover:bg-cyan-400 nav-link">
+        Login
+      </a>
+    </nav>
+
+    <!-- MOBILE HAMBURGER (visible up to 1117px) -->
+    <button id="hamburgerBtn" class="xl2:hidden p-2 rounded-md">
+      <i class="fa-solid fa-bars text-2xl text-white"></i>
+    </button>
+
+  </div>
+</header>
+
+  
+  <!-- ================= MOBILE MENU ================= -->
+  <!-- MOBILE MENU -->
+<nav id="mobileMenu" class="hidden fixed inset-x-0 top-20 z-40 bg-black text-white border-t border-gray-800 shadow-lg">
+  <div class="px-6 py-6 flex flex-col gap-4 text-lg font-semibold">
+
+    <!-- HOME MAIN LINK (index.html) -->
+
+
+    <!-- DROPDOWN BUTTON -->
+    <button onclick="toggleMobileDrop()" 
+            class="flex items-center justify-between w-full">
+            <a href="index.html" class="hover:text-cyan-300">Home</a>
+      <i class="fa-solid fa-chevron-down text-sm"></i>
+    </button>
+
+    <!-- DROPDOWN CONTENT -->
+    <div id="mobileHomeDrop" class="hidden pl-4">
+      <a href="home2.html" class="block py-2 hover:text-cyan-300">Home 2</a>
+    </div>
+
+    <a href="about1.html" class="hover:text-cyan-300">Menu🍔</a>
+    <a href="services1.html" class="hover:text-cyan-300">Specials🥘🍰</a>
+    <a href="Dashboard.html" class="hover:text-cyan-300">Dashboard📊</a>
+
+    <a href="contact.html" class="active-link">Contact</a>
+    <a href="login.html" class="text-cyan-300 font-semibold mt-2">Login</a>
+
+  </div>
+</nav>
+<button id="hamburgerBtn" class="xl2:hidden p-2 rounded-md">
+  <i class="fa-solid fa-bars text-2xl text-white"></i>
+</button>
+
+<main class="pt-32">
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stackly Dashboard • Analytics</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    body { background:#000; color:#fff; font-family: 'Segoe UI', sans-serif; }
+
+    /* subtle card glow */
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,215,0,0.06);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    }
+
+    h1 { text-shadow: 0 8px 30px rgba(255,215,0,0.03); }
+
+    .kpi-value { color:#a7f3d0; } /* subtle green */
+    .kpi-sub { color:#9ca3af; } /* muted */
+
+    /* gold button */
+    .gold-btn {
+      background: linear-gradient(90deg,#b8860b,#ffd700);
+      color: #000;
+      border-radius: 10px;
+      padding: .6rem 1rem;
+      font-weight: 700;
+    }
+    .gold-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(255,215,0,0.12); }
+
+    /* small sparkline */
+    .spark-canvas { width: 100%; height: 42px; display:block; }
+
+    /* responsive chart container */
+    #mainChartWrap { min-height: 320px; }
+
+    @media (min-width:1024px) {
+      #mainChartWrap { min-height: 420px; }
+    }
+  </style>
+</head>
+<body class="antialiased">
+
+  <div class="max-w-7xl mx-auto px-6 py-12">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-3xl font-extrabold">Dashboard — Analytics</h1>
+        <p class="text-gray-400 mt-1">Live overview of your restaurant performance</p>
+      </div>
+
+      <div class="flex items-center gap-4">
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="card p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-sm text-gray-400">Revenue (Last 30d)</p>
+            <div class="text-2xl font-bold kpi-value mt-2">$86,420</div>
+            <div class="text-sm kpi-sub mt-1">+12.4% vs last month</div>
+          </div>
+          <div class="text-yellow-400 text-3xl">💰</div>
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-sm text-gray-400">Orders</p>
+            <div class="text-2xl font-bold kpi-value mt-2">3,412</div>
+            <div class="text-sm kpi-sub mt-1">+8.2% vs last month</div>
+          </div>
+          <div class="text-yellow-400 text-3xl">🧾</div>
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-sm text-gray-400">Avg. Ticket</p>
+            <div class="text-2xl font-bold kpi-value mt-2">$25.32</div>
+            <div class="text-sm kpi-sub mt-1">Stable</div>
+          </div>
+          <div class="text-yellow-400 text-3xl">🍣</div>
+        </div>
+      </div>
+
+      <div class="card p-5">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-sm text-gray-400">Returning Guests</p>
+            <div class="text-2xl font-bold kpi-value mt-2">27%</div>
+            <div class="text-sm kpi-sub mt-1">+2.1% MoM</div>
+          </div>
+          <div class="text-yellow-400 text-3xl">🔁</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Chart + Side mini panels -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+
+      <!-- Main chart (big) -->
+      <div class="lg:col-span-2 card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-semibold">Monthly Sales (Last 12 months)</h3>
+            <p class="text-gray-400 text-sm mt-1">Revenue by month — includes dine-in & online orders</p>
+          </div>
+
+          <div class="text-sm text-gray-400">
+            <select id="rangeSelect" class="bg-transparent border border-gray-700 rounded px-3 py-1">
+              <option value="12">12 months</option>
+              <option value="6">6 months</option>
+              <option value="3">3 months</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="mainChartWrap" class="h-80">
+          <canvas id="mainChart"></canvas>
+        </div>
+      </div>
+
+    <!-- Table / Activity sample -->
+    <div class="card p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Recent Orders</h3>
+        <p class="text-sm text-gray-400">Latest 6 orders</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="text-gray-400">
+            <tr>
+              <th class="pb-3">Order ID</th>
+              <th class="pb-3">Customer</th>
+              <th class="pb-3">Items</th>
+              <th class="pb-3">Total</th>
+              <th class="pb-3">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1245</td>
+              <td class="py-4">Aisha</td>
+              <td class="py-4">Imperial Salmon Roll</td>
+              <td class="py-4">$38.50</td>
+              <td class="py-4 text-green-400 font-semibold">Completed</td>
+            </tr>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1244</td>
+              <td class="py-4">Ravi</td>
+              <td class="py-4">Wagyu Golden Maki</td>
+              <td class="py-4">$58.99</td>
+              <td class="py-4 text-yellow-400 font-semibold">Preparing</td>
+            </tr>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1243</td>
+              <td class="py-4">Sara</td>
+              <td class="py-4">Volcano Lava Roll</td>
+              <td class="py-4">$26.50</td>
+              <td class="py-4 text-green-400 font-semibold">Completed</td>
+            </tr>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1242</td>
+              <td class="py-4">Arjun</td>
+              <td class="py-4">Samurai Sashimi Platter</td>
+              <td class="py-4">$91.00</td>
+              <td class="py-4 text-red-400 font-semibold">Canceled</td>
+            </tr>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1241</td>
+              <td class="py-4">Mina</td>
+              <td class="py-4">Dragon Fire</td>
+              <td class="py-4">$29.00</td>
+              <td class="py-4 text-yellow-400 font-semibold">Preparing</td>
+            </tr>
+            <tr class="border-t border-gray-800">
+              <td class="py-4">#1240</td>
+              <td class="py-4">Ken</td>
+              <td class="py-4">Signature Roll</td>
+              <td class="py-4">$18.99</td>
+              <td class="py-4 text-green-400 font-semibold">Completed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Chart logic -->
+  <script>
+    // Realistic sample data (Monthly revenue)
+    const monthlyLabels = ["Dec", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"];
+    const monthlyRevenue = [6520, 7100, 6800, 7400, 8000, 8600, 9200, 9800, 10500, 11200, 11900, 13200]; // example in USD
+
+    // Create gradient for chart
+    function createGradient(ctx, area) {
+      const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+      gradient.addColorStop(0, 'rgba(255,215,0,0.06)'); // pale gold
+      gradient.addColorStop(0.5, 'rgba(255,215,0,0.03)');
+      gradient.addColorStop(1, 'rgba(255,215,0,0)');
+      return gradient;
+    }
+
+    // Main line chart
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    let mainChart;
+
+    function renderMainChart(range = 12) {
+      // choose last N points
+      const n = parseInt(range);
+      const labels = monthlyLabels.slice(-n);
+      const data = monthlyRevenue.slice(-n);
+
+      // destroy if exists
+      if (mainChart) mainChart.destroy();
+
+      // chart
+      mainChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Revenue (USD)',
+            data,
+            tension: 0.35,
+            borderWidth: 3,
+            borderColor: '#ffd700',
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#ffd700',
+            pointRadius: 4,
+            fill: true,
+            backgroundColor: function(context) {
+              const chart = context.chart;
+              const {ctx, chartArea} = chart;
+              if (!chartArea) return null;
+              return createGradient(ctx, chartArea);
+            }
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#111',
+              titleColor: '#ffd700',
+              bodyColor: '#fff',
+              padding: 10,
+              mode: 'index',
+              intersect: false
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(255,255,255,0.03)' },
+              ticks: { color: '#9ca3af' }
+            },
+            y: {
+              beginAtZero: false,
+              grid: { color: 'rgba(255,255,255,0.03)' },
+              ticks: {
+                color: '#9ca3af',
+                callback: function(value) { return '$' + value; }
+              }
+            }
+          },
+          interaction: { mode: 'index', intersect: false },
+          animation: { duration: 900, easing: 'easeOutQuart' }
+        }
+      });
+    }
+
+    // initial render
+    renderMainChart(12);
+
+    // range select handler
+    document.getElementById('rangeSelect').addEventListener('change', function() {
+      renderMainChart(this.value);
+    });
+
+    // small sparkline utils (tiny area charts)
+    function createSpark(canvasId, data, color='#ffd700') {
+      const c = document.getElementById(canvasId).getContext('2d');
+      new Chart(c, {
+        type: 'line',
+        data: {
+          labels: data.map((_,i)=>i+1),
+          datasets: [{
+            data,
+            borderWidth: 2,
+            borderColor: color,
+            pointRadius: 0,
+            tension: 0.35,
+            fill: false
+          }]
+        },
+        options: {
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: { x:{ display:false }, y:{ display:false } },
+          elements: { line: { borderCapStyle: 'round' } }
+        }
+      });
+    }
+
+    // sample spark data
+    createSpark('spark1', [90,120,110,140,130,150,160], '#7ef2c3');
+    createSpark('spark2', [10,18,14,22,20,28,34], '#ffd700');
+
+    // download chart as PNG
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const link = document.createElement('a');
+      link.download = 'stackly-sales-chart.png';
+      link.href = document.getElementById('mainChart').toDataURL('image/png', 1.0);
+      link.click();
+    });
+  </script>
+</body>
+</html>
+
+<footer class="bg-[black] text-gray-300 py-16 w-full">
+
+  <div class="w-full px-6 md:px-12">
+
+    <!-- GRID -->
+    <div class="grid md:grid-cols-3 gap-12 items-start text-center md:text-left">
+
+      <!-- LEFT -->
+      <div>
+        <img src="stackly.webp" class="w-40 mx-auto md:mx-0 mb-3" />
+        <p>Get your business engaged</p>
+      </div>
+
+      <!-- CENTER -->
+      <div class="md:border-l md:border-gray-700 md:pl-10">
+        <h4 class="text-xl font-semibold text-white mb-4 tracking-wide">Main</h4>
+
+        <ul class="space-y-3 text-gray-300 text-sm">
+          <li><a href="index.html" class="hover:text-white">Home </a></li>
+          <li><a href="about1.html" class="hover:text-white">menu🍔</a></li>
+          <li><a href="about1.html" class="hover:text-white">Specials🥘🍰</a></li>
+          <li><a href="Dashboard.html" class="hover:text-white">dashboard📊</a></li>
+          <li><a href="contact.html" class="hover:text-white">Contact📞</a></li>
+        </ul>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="md:border-l md:border-gray-700 md:pl-10">
+        <h4 class="text-xl font-semibold text-white mb-4 tracking-wide">Social</h4>
+
+        <ul class="space-y-3 text-gray-300 text-sm">
+          <li><i class="fa-brands fa-facebook mr-2"></i> <a href="404.html" class="hover:text-white">Facebook</a></li>
+          <li><i class="fa-brands fa-twitter mr-2"></i> <a href="404.html" class="hover:text-white">Twitter</a></li>
+          <li><i class="fa-brands fa-linkedin mr-2"></i> <a href="404.html" class="hover:text-white">LinkedIn</a></li>
+          <li><i class="fa-brands fa-instagram mr-2"></i> <a href="404.html" class="hover:text-white">Instagram</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- COPYRIGHT -->
+    <div class="text-center text-gray-500 text-sm mt-12 border-t border-gray-800 pt-6">
+      © Stackly – 2025. All rights reserved.
+    </div>
+
+  </div>
+</footer>
