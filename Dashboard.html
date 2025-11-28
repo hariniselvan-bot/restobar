@@ -556,3 +556,18 @@
 
   </div>
 </footer>
+<script>
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileHomeDrop = document.getElementById("mobileHomeDrop");
+
+  // Open/close hamburger menu
+  hamburgerBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  // Dropdown inside mobile menu
+  function toggleMobileDrop() {
+    mobileHomeDrop.classList.toggle("hidden");
+  }
+</script>
